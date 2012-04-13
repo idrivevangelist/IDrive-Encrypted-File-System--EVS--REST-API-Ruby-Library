@@ -42,9 +42,9 @@ document = REXML::Document.new(result.body)
 result = document.root
 puts result.attributes['message']
 
-puts '<br /><br /><strong>Validate Account<br /></strong>'
+puts '<br /><br /><strong>Search Files<br /></strong>'
 parameters = {"p"=>"/OWNER-PC","searchkey"=>"Chrysanthemum","trash"=>"yes"}
-result = myapi.execute("getServerAddress",parameters)
+result = myapi.execute("searchFiles",parameters)
 document = REXML::Document.new(result.body)
 result = document.root
 puts result.attributes['message']
