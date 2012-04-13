@@ -1,15 +1,51 @@
 #!/usr/bin/eruby
 <%
+#load required files
 require 'iDrive.rb'
+require 'rexml/document'
 
-parameters = {}
-puts '<strong>Validate Account<br /></strong>'
+#create library instance
 myapi = IDrive::IDriveAPI.new('delray_davis','vXpt952LZ')
+
+#set parameters for the function
+parameters = {}
+
+puts '<strong>Validate Account<br /></strong>'
+
+#call the appropriate function
 result = myapi.execute("validateAccount",parameters)
+
+#load the result into some form of XML parser
+document = REXML::Document.new(result.body)
+
+#point a variable at the XML tree root
+result = document.root
+
+#print out the status message
 puts result.attributes['message']
-puts "<br />"
-puts '<strong>Search Files<br /></strong>'
-parameters = {"p" => "/OWNER-PC", "searchKey" => "delray", "trash" => "yes"}
-result = myapi.execute("searchFiles",parameters)
+
+puts '<br /><br /><strong>Get Server Address<br /></strong>'
+parameters = {}
+result = myapi.execute("getServerAddress",parameters)
+
+puts '<br /><br /><strong>Configure Account<br /></strong>'
+parameters = {"enctype" => "default", "pvtkey" => ""}
+result = myapi.execute("configureAccount",parameters)
+document = REXML::Document.new(result.body)
+result = document.root
+puts result.attributes['message']
+
+puts '<br /><br /><strong>Validate Private Key<br /></strong>'
+parameters = {"pvtkey" => ""}
+result = myapi.execute("validatePvtKey",parameters)
+document = REXML::Document.new(result.body)
+result = document.root
+puts result.attributes['message']
+
+puts '<br /><br /><strong>Validate Account<br /></strong>'
+parameters = {"p"=>"/OWNER-PC","searchkey"=>"Chrysanthemum","trash"=>"yes"}
+result = myapi.execute("getServerAddress",parameters)
+document = REXML::Document.new(result.body)
+result = document.root
 puts result.attributes['message']
 %>
