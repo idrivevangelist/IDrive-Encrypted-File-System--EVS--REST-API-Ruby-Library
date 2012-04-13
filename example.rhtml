@@ -1,0 +1,15 @@
+#!/usr/bin/eruby
+<%
+require 'iDrive.rb'
+
+parameters = {}
+puts '<strong>Validate Account<br /></strong>'
+myapi = IDrive::IDriveAPI.new('delray_davis','vXpt952LZ')
+result = myapi.execute("validateAccount",parameters)
+puts result.attributes['message']
+puts "<br />"
+puts '<strong>Search Files<br /></strong>'
+parameters = {"p" => "/OWNER-PC", "searchKey" => "delray", "trash" => "yes"}
+result = myapi.execute("searchFiles",parameters)
+puts result.attributes['message']
+%>
