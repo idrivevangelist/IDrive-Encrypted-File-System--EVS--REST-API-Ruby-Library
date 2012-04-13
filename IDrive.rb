@@ -18,10 +18,13 @@ module IDrive
 
                         document = REXML::Document.new(response.body)
                         @base_url = document.root.attributes['webApiServer']
-                        puts @base_url
                 end
                 def execute(page, parameters)
-                        uri = URI.parse("https://"+@base_url)
+			if page == 'getServerAddress'
+				uri = URI.parse("https://evs.idrive.com/")
+			else
+                        	uri = URI.parse("https://"+@base_url)
+			end
 
                         http = Net::HTTP.new(uri.host, uri.port)
 
@@ -37,11 +40,11 @@ module IDrive
 
                         parameters['uid'] = @uid
                         parameters['pwd'] = @pwd
-                        request.set_form_data(parameters)
-                        response = http.request(request)
 
-                        document = REXML::Document.new(response.body)
-                        return document.root
+                        request.set_form_data(parameters)
+
+                        response = http.request(request)
+                        return response
                 end
         end
 end
